@@ -39,15 +39,7 @@ def infix_to_postfix(tokens: list[str]) -> list[str]:
     operators = []
 
     for token in tokens:
-        if (
-            42 <= ord(token) <= 47
-            or token == "×"
-            or token == "÷"
-            or token == "−"
-            or token == "^"
-            and ord(token) != 46
-        ):
-            # le code acsii de 46 est le . il faut donc le garder dans les nombres
+        if type(token) is type(str()) and token != "(" and token != ")":
             try:
                 valeur_dernier_operatation = precedence_of_operator[operators[-1]]
             except IndexError:
@@ -96,4 +88,5 @@ def evaluate_postfix(tokens: list[str]) -> float:
     None
 
 
-print(infix_to_postfix(tokenize("3 + 224.0 * 2 / ( 1 - 5 )")))
+print(infix_to_postfix(tokenize("3 + 2.45 * 2 / ( 1 - 5 )")))
+print(infix_to_postfix(tokenize("3 + 2.45 * 2 / ( 1 - 5 )")) == 1)
