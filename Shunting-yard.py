@@ -1,10 +1,23 @@
 def tokenize(expression: str) -> list[str]:
     expression_list = list(expression)
+    list_finale = []
+    nombre_vergule = str()
     for element in expression_list:
-        if element == " ":
-            expression_list.remove(element)
+        if (
+            element in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+            or element == "."
+        ):
+            nombre_vergule += element
+        elif (
+            element in ["(", ")", "^", "*", "×", "/", "÷", "+", "−", "-"]
+            and element != " "
+        ):
+            if nombre_vergule != "":
+                list_finale.append(float(nombre_vergule))
+            list_finale.append(element)
+            nombre_vergule = str()
 
-    return expression_list
+    return list_finale
 
 
 # Need to fin a solution for . and , in nomber
@@ -83,4 +96,4 @@ def evaluate_postfix(tokens: list[str]) -> float:
     None
 
 
-print(infix_to_postfix(tokenize("3 + 4 * 2 / ( 1 - 5 )")))
+print(infix_to_postfix(tokenize("3 + 224.0 * 2 / ( 1 - 5 )")))
