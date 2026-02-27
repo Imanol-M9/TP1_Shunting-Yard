@@ -22,7 +22,6 @@ def tokenize(expression: str) -> list[str]:
     return list_finale
 
 
-# Need to fin a solution for . and , in nomber
 def infix_to_postfix(tokens: list[str]) -> list[str]:
     precedence_of_operator = {
         "(": 0,
