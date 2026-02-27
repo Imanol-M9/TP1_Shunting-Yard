@@ -1,6 +1,6 @@
-from Shunting_yard import tokenize
-from Shunting_yard import infix_to_postfix
-from Shunting_yard import evaluate_postfix
+from shunting_yard import tokenize
+from shunting_yard import infix_to_postfix
+from shunting_yard import evaluate_postfix
 import tkinter as tk
 
 
