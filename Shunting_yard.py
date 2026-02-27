@@ -1,24 +1,35 @@
+import interface
+
+
 def tokenize(expression: str) -> list[str]:
+    def add_list_finale(nombre):
+        try:
+            print(f"le nombre {nombre} va {float(nombre)}")
+            list_finale.append(float(nombre))
+        except ValueError as e:
+            print(ValueError)
+            interface.execute_erreur_(f"ValueError: {e}")
+
     expression_list = list(expression)
     list_finale = []
     nombre_vergule = str()
     for element in expression_list:
+        print("element", element)
         if (
             element in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
             or element == "."
         ):
-            print(element)
             nombre_vergule += element
         elif (
-            element in ["(", ")", "^", "*", "×", "/", "÷", "+", "−", "-"]
-            and element != " "
+            element in ["(", ")", "*", "×", "/", "÷", "+", "−", "-"] and element != " "
         ):
             if nombre_vergule != "":
-                list_finale.append(float(nombre_vergule))
+                print(f"nombre_vergule {nombre_vergule}")
+                add_list_finale(nombre_vergule)
             list_finale.append(element)
             nombre_vergule = str()
-
-    list_finale.append(float(nombre_vergule))
+    if len(nombre_vergule) != 0:
+        add_list_finale(nombre_vergule)
     return list_finale
 
 
@@ -91,22 +102,27 @@ def evaluate_postfix(tokens: list[str]) -> float:
         if type(tokens[token_index]) is type(float()):
             list_nombre.append(tokens[token_index])
         if type(tokens[token_index]) is type(str()):
-            match precedence_of_operator[tokens[token_index]]:
-                case 2:
-                    if tokens[token_index] == "+":
-                        list_nombre.append(list_nombre[-2] + list_nombre[-1])
-                    elif tokens[token_index] == "-" or tokens[token_index] == "−":
-                        list_nombre.append(list_nombre[-2] - list_nombre[-1])
-                    del list_nombre[-2], list_nombre[-2]
-                case 3:
-                    if tokens[token_index] == "*" or tokens[token_index] == "×":
-                        list_nombre.append(list_nombre[-2] * list_nombre[-1])
-                    elif tokens[token_index] == "/" or tokens[token_index] == "÷":
-                        list_nombre.append(list_nombre[-2] / list_nombre[-1])
-                    del list_nombre[-2], list_nombre[-2]
-
+            try:
+                match precedence_of_operator[tokens[token_index]]:
+                    case 2:
+                        if tokens[token_index] == "+":
+                            list_nombre.append(list_nombre[-2] + list_nombre[-1])
+                        elif tokens[token_index] == "-" or tokens[token_index] == "−":
+                            list_nombre.append(list_nombre[-2] - list_nombre[-1])
+                        del list_nombre[-2], list_nombre[-2]
+                    case 3:
+                        if tokens[token_index] == "*" or tokens[token_index] == "×":
+                            list_nombre.append(list_nombre[-2] * list_nombre[-1])
+                        elif tokens[token_index] == "/" or tokens[token_index] == "÷":
+                            list_nombre.append(list_nombre[-2] / list_nombre[-1])
+                        del list_nombre[-2], list_nombre[-2]
+            except IndexError as e:
+                interface.execute_erreur_(f"IndexError : {e}")
+            except ZeroDivisionError as e:
+                print("diviser 0 ")
+                interface.execute_erreur_(f"ZeroDivisionError : {e}")
+                return "impossible"
     return list_nombre[0]
 
 
 # print(infix_to_postfix(tokenize("3 + 2.45 * 2 / ( 1 - 5 )")))
-print(evaluate_postfix(infix_to_postfix(tokenize("((1+1+1)*3) / 9 "))))
