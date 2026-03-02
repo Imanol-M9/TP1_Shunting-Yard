@@ -1,7 +1,9 @@
 from shunting_yard import tokenize
 from shunting_yard import infix_to_postfix
 from shunting_yard import evaluate_postfix
+
 import tkinter as tk
+import keyboard
 
 
 def affiche():
@@ -9,17 +11,25 @@ def affiche():
     resultat.config(
         text=f"{evaluate_postfix(infix_to_postfix(tokenize(valeur.get())))}"
     )
-    if evaluate_postfix(infix_to_postfix(tokenize(valeur.get()))) != "impossible":
-        erreur_page.config(text="")
+    try:
+        if type(evaluate_postfix(infix_to_postfix(tokenize(valeur.get())))[0]) is type(BaseException):
+            execute_erreur_(evaluate_postfix(infix_to_postfix(tokenize(valeur.get())))[1])
+    except TypeError:
+        None
 
-
-def execute_erreur_(nom):
-    erreur_page.config(text=nom)
+def execute_erreur_(message):
+    print(message)
     shunt_yarded.config(text="postfix : erreur")
     resultat.config(text="resultat : erreur")
+    erreur_page.config(text= f"{message}")
+
+
+def fonction_quit():
+    fenetre.destroy()
 
 
 fenetre = tk.Tk()
+keyboard.add_hotkey("esc", fonction_quit)
 fenetre.title("Shunting_yard Alogritme")
 
 valeur = tk.Entry(fenetre, text="calculer")
