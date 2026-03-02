@@ -35,12 +35,12 @@ def tokenize(expression: str) -> list[str]:
             "-",
             " ",
         ]:
-            return ValueError, "opperateur non conforme"
+            return ValueError, "Opérateur inconnu"
 
     if len(nombre_vergule) != 0:
         add_list_finale(nombre_vergule)
-    if (ValueError, "Nombre mal formé") in list_finale:
-        return ValueError, "Nombre mal formé"
+    if (ValueError, "Opérateur inconnu") in list_finale:
+        return ValueError, "Opérateur inconnu"
     else:
         return list_finale
 
@@ -152,11 +152,11 @@ def evaluate_postfix(tokens: list[str]) -> float:
                             return IndexError, "Parenthèse fermante manquente"
 
                 except IndexError:
-                    return IndexError, "Un ou plusieur opperateur est de trop"
+                    return IndexError, "Un ou plusieur opérateur est de trop"
 
                 except ZeroDivisionError:
-                    return ZeroDivisionError, "Division par 0 imposible"
+                    return ZeroDivisionError, "Division par zéro imposible"
     if len(list_nombre) != 1:
-        return IndexError, "Il manque d'operateur"
+        return IndexError, "Il manque d'opérateur"
     else:
         return list_nombre[0]

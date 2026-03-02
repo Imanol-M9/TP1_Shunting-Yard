@@ -7,19 +7,20 @@ import keyboard
 
 
 def affiche():
-    print(valeur.get())
     if valeur.get() == "":
         clear()
     else:
         erreur_page.config(text="")
-        shunt_yarded.config(text=f"postfix : {infix_to_postfix(tokenize(valeur.get()))}")
+        shunt_yarded.config(
+            text=f"postfix : {infix_to_postfix(tokenize(valeur.get()))}"
+        )
         resultat.config(
             text=f"{evaluate_postfix(infix_to_postfix(tokenize(valeur.get())))}"
         )
         try:
-            if type(evaluate_postfix(infix_to_postfix(tokenize(valeur.get())))[0]) is type(
-                BaseException
-            ):
+            if type(
+                evaluate_postfix(infix_to_postfix(tokenize(valeur.get())))[0]
+            ) is type(BaseException):
                 execute_erreur_(
                     evaluate_postfix(infix_to_postfix(tokenize(valeur.get())))[1]
                 )
@@ -36,7 +37,7 @@ def execute_erreur_(message):
 def fonction_quit():
     fenetre.destroy()
     shunt_yarded.config(text="postfix : erreur")
-    resultat.config(text="resultat : erreur")
+    resultat.config(text="résultat : erreur")
     erreur_page.config(text="")
 
 
@@ -45,8 +46,7 @@ def clear():
     valeur.config(text=c)
     erreur_page.config(text="")
     shunt_yarded.config(text="postfix : ")
-    resultat.config(text="resultat : ")
-
+    resultat.config(text="résultat : ")
 
 
 fenetre = tk.Tk()
@@ -58,14 +58,14 @@ tk.Button(fenetre, text="afficher", command=affiche).grid(
     row=3, column=5, padx=5, pady=5
 )
 shunt_yarded = tk.Label(fenetre, text="postfix : ")
-resultat = tk.Label(fenetre, text="resultat : ")
+resultat = tk.Label(fenetre, text="résultat : ")
 erreur_page = tk.Label(fenetre, text=" ")
 racourti_clav = tk.Label(
     fenetre,
     text="liste racourcise est clavier\n "
-    "escape --> sortire du programe\n enter --> "
-    "effectuer le calcule\n Ctrl BakSpace  --> "
-    "vider la console d'entrer",
+    "Escape --> sortire du programe\n "
+    "Enter --> effectuer le calcule\n "
+    "Ctrl BackSpace  --> vider la console d'entrer",
 )
 
 valeur.grid(row=1, column=5, padx=5, pady=5)
