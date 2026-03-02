@@ -1,7 +1,6 @@
 def tokenize(expression: str) -> list[str]:
     def add_list_finale(nombre):
         try:
-            print(f"le nombre {nombre} va {float(nombre)}")
             list_finale.append(float(nombre))
 
         except ValueError:
@@ -11,7 +10,6 @@ def tokenize(expression: str) -> list[str]:
     list_finale = []
     nombre_vergule = str()
     for element in expression_list:
-        print(element)
         if (
             element in ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
             or element == "."
@@ -21,11 +19,6 @@ def tokenize(expression: str) -> list[str]:
         elif (
             element in ["(", ")", "*", "×", "/", "÷", "+", "−", "-"] and element != " "
         ):
-            print(
-                element,
-                element in ["(", ")", "*", "×", "/", "÷", "+", "−", "-"],
-                element != " ",
-            )
             if nombre_vergule != "":
                 add_list_finale(nombre_vergule)
             list_finale.append(element)
@@ -53,7 +46,6 @@ def tokenize(expression: str) -> list[str]:
 
 
 def infix_to_postfix(tokens: list[str]) -> list[str]:
-    print("infix_to_postfix", tokens)
     precedence_of_operator = {
         "(": 0,
         ")": 0,
@@ -131,7 +123,6 @@ def evaluate_postfix(tokens: list[str]) -> float:
         "−": 2,
         "-": 2,
     }
-    print("tokens final", tokens)
     if type(tokens[0]) is type(BaseException):
         return tokens
     else:
@@ -161,11 +152,11 @@ def evaluate_postfix(tokens: list[str]) -> float:
                             return IndexError, "Parenthèse fermante manquente"
 
                 except IndexError:
-                    print("index_erreur")
                     return IndexError, "Un ou plusieur opperateur est de trop"
 
                 except ZeroDivisionError:
-                    print("diviser 0 ")
-                    return ZeroDivisionError, "ZeroDivisionError"
-    return list_nombre[0]
-
+                    return ZeroDivisionError, "Division par 0 imposible"
+    if len(list_nombre) != 1:
+        return IndexError, "Il manque d'operateur"
+    else:
+        return list_nombre[0]
