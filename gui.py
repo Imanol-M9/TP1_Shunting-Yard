@@ -7,22 +7,22 @@ import keyboard
 
 
 def affiche():
-    if valeur.get() == "":
+    if equation.get() == "":
         clear()
     else:
         erreur_page.config(text="")
         shunt_yarded.config(
-            text=f"postfix : {infix_to_postfix(tokenize(valeur.get()))}"
+            text=f"postfix : {infix_to_postfix(tokenize(equation.get()))}"
         )
         resultat.config(
-            text=f"{evaluate_postfix(infix_to_postfix(tokenize(valeur.get())))}"
+            text=f"{evaluate_postfix(infix_to_postfix(tokenize(equation.get())))}"
         )
         try:
             if type(
-                evaluate_postfix(infix_to_postfix(tokenize(valeur.get())))[0]
+                evaluate_postfix(infix_to_postfix(tokenize(equation.get())))[0]
             ) is type(BaseException):
                 execute_erreur_(
-                    evaluate_postfix(infix_to_postfix(tokenize(valeur.get())))[1]
+                    evaluate_postfix(infix_to_postfix(tokenize(equation.get())))[1]
                 )
         except TypeError:
             None
@@ -43,7 +43,7 @@ def fonction_quit():
 
 def clear():
     c = tk.StringVar(value="")
-    valeur.config(text=c)
+    equation.config(text=c)
     erreur_page.config(text="")
     shunt_yarded.config(text="postfix : ")
     resultat.config(text="résultat : ")
@@ -52,11 +52,8 @@ def clear():
 fenetre = tk.Tk()
 fenetre.title("Shunting_yard Alogritme")
 
-valeur = tk.Entry(fenetre, text="calculer")
-
-tk.Button(fenetre, text="afficher", command=affiche).grid(
-    row=3, column=5, padx=5, pady=5
-)
+Bouton = tk.Button(fenetre, text="Calculer", command=affiche)
+equation = tk.Entry(fenetre)
 shunt_yarded = tk.Label(fenetre, text="postfix : ")
 resultat = tk.Label(fenetre, text="résultat : ")
 erreur_page = tk.Label(fenetre, text=" ")
@@ -68,13 +65,17 @@ racourti_clav = tk.Label(
     "Ctrl BackSpace  --> vider la console d'entrer",
 )
 
-valeur.grid(row=1, column=5, padx=5, pady=5)
+Bouton.grid(row=3, column=5, padx=5, pady=5)
+equation.grid(row=1, column=5, padx=5, pady=5)
 shunt_yarded.grid(row=4, column=5, padx=5, pady=5)
 resultat.grid(row=5, column=5, padx=5, pady=5)
 erreur_page.grid(row=6, column=5, padx=5, pady=5)
 racourti_clav.grid(row=1, column=6, padx=5, pady=5)
 
+
 keyboard.add_hotkey("esc", fonction_quit)
 keyboard.add_hotkey("enter", affiche)
 keyboard.add_hotkey("ctrl+backspace", clear)
+
+
 fenetre.mainloop()

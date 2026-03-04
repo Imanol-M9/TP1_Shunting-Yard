@@ -45,18 +45,20 @@ def tokenize(expression: str) -> list[str]:
         return list_finale
 
 
+precedence_of_operator = {
+    "(": 0,
+    ")": 0,
+    "*": 3,
+    "×": 3,
+    "/": 3,
+    "÷": 3,
+    "+": 2,
+    "−": 2,
+    "-": 2,
+}
+
+
 def infix_to_postfix(tokens: list[str]) -> list[str]:
-    precedence_of_operator = {
-        "(": 0,
-        ")": 0,
-        "*": 3,
-        "×": 3,
-        "/": 3,
-        "÷": 3,
-        "+": 2,
-        "−": 2,
-        "-": 2,
-    }
     output = []
     operators = []
     try:
@@ -112,17 +114,6 @@ def infix_to_postfix(tokens: list[str]) -> list[str]:
 
 def evaluate_postfix(tokens: list[str]) -> float:
     list_nombre = list()
-    precedence_of_operator = {
-        "(": 0,
-        ")": 0,
-        "*": 3,
-        "×": 3,
-        "/": 3,
-        "÷": 3,
-        "+": 2,
-        "−": 2,
-        "-": 2,
-    }
     if type(tokens[0]) is type(BaseException):
         return tokens
     else:
@@ -132,23 +123,29 @@ def evaluate_postfix(tokens: list[str]) -> float:
             if type(tokens[token_index]) is type(str()):
                 try:
                     match precedence_of_operator[tokens[token_index]]:
-                        case 2:
+                        case 2:  # operateur addition et soustraction
                             if tokens[token_index] == "+":
                                 list_nombre.append(list_nombre[-2] + list_nombre[-1])
+
                             elif (
                                 tokens[token_index] == "-" or tokens[token_index] == "−"
                             ):
                                 list_nombre.append(list_nombre[-2] - list_nombre[-1])
+
                             del list_nombre[-2], list_nombre[-2]
-                        case 3:
+
+                        case 3:  # operateur division et multiplication
                             if tokens[token_index] == "*" or tokens[token_index] == "×":
                                 list_nombre.append(list_nombre[-2] * list_nombre[-1])
+
                             elif (
                                 tokens[token_index] == "/" or tokens[token_index] == "÷"
                             ):
                                 list_nombre.append(list_nombre[-2] / list_nombre[-1])
+
                             del list_nombre[-2], list_nombre[-2]
-                        case 0:
+
+                        case 0:  # si il y a un reste de parenthèse non pairer
                             return IndexError, "Parenthèse fermante manquente"
 
                 except IndexError:
@@ -156,6 +153,7 @@ def evaluate_postfix(tokens: list[str]) -> float:
 
                 except ZeroDivisionError:
                     return ZeroDivisionError, "Division par zéro imposible"
+
     if len(list_nombre) != 1:
         return IndexError, "Il manque d'opérateur"
     else:
